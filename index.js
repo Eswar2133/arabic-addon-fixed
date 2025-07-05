@@ -1,4 +1,4 @@
-const { addonBuilder } = require("stremio-addon-sdk");
+import { addonBuilder } from "stremio-addon-sdk";
 
 const manifest = {
   id: "org.arabic.addon",
@@ -16,8 +16,9 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-const builder = new addonBuilder(manifest); // ✅ constructor with `new`
+const builder = new addonBuilder(manifest);
 
+// Sample catalog handler
 builder.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({
     metas: [
@@ -31,6 +32,7 @@ builder.defineCatalogHandler(({ type, id, extra }) => {
   });
 });
 
+// Sample stream handler
 builder.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
@@ -46,4 +48,4 @@ builder.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-module.exports = builder.getInterface();
+export default builder.getInterface();
