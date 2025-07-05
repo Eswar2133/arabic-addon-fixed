@@ -1,4 +1,5 @@
-import * as sdk from 'stremio-addon-sdk';
+import sdk from "stremio-addon-sdk";
+
 const { addonBuilder } = sdk;
 
 const manifest = {
@@ -19,7 +20,6 @@ const manifest = {
 
 const builder = addonBuilder(manifest);
 
-// Sample catalog handler
 builder.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({
     metas: [
@@ -33,7 +33,6 @@ builder.defineCatalogHandler(({ type, id, extra }) => {
   });
 });
 
-// Sample stream handler
 builder.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
@@ -45,7 +44,6 @@ builder.defineStreamHandler(({ type, id }) => {
       ],
     });
   }
-
   return Promise.resolve({ streams: [] });
 });
 
