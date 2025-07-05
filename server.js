@@ -6,6 +6,13 @@ process.on("unhandledRejection", (reason) => {
 });
 
 const server = http.createServer((req, res) => {
+  // Add this route for testing export
+  if (req.url === "/test-export") {
+    const addonSDK = require("stremio-addon-sdk");
+    res.setHeader("Content-Type", "application/json");
+    return res.end(JSON.stringify(Object.keys(addonSDK)));
+  }
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -13,10 +20,8 @@ const server = http.createServer((req, res) => {
   }
 
   if (typeof addonInterface === "function") {
-    // Some addons export directly as a function
     addonInterface(req, res);
   } else if (addonInterface && typeof addonInterface.handler === "function") {
-    // Stremio Addon SDK style
     addonInterface.handler(req, res);
   } else {
     res.writeHead(500);
