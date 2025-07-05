@@ -1,4 +1,4 @@
-const { addonBuilder } = require("stremio-addon-sdk");
+import { addonBuilder } from "stremio-addon-sdk";
 
 const manifest = {
   id: "org.arabic.addon",
@@ -16,9 +16,9 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-const builder = new addonBuilder(manifest); // Change to new addonBuilder(manifest)
+const builder = new addonBuilder(manifest);
 
-builder.defineCatalogHandler(({ type, id, extra }) => {
+builder.defineCatalogHandler(() => {
   return Promise.resolve({
     metas: [
       {
@@ -31,7 +31,7 @@ builder.defineCatalogHandler(({ type, id, extra }) => {
   });
 });
 
-builder.defineStreamHandler(({ type, id }) => {
+builder.defineStreamHandler(({ id }) => {
   if (id === "movie1") {
     return Promise.resolve({
       streams: [
@@ -46,4 +46,5 @@ builder.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-module.exports = builder.getInterface();
+// This is the correct export for ES Modules
+export default builder.getInterface();
