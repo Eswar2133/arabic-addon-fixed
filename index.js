@@ -4,7 +4,7 @@ const manifest = {
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
-  description: "Arabic Movies and Series",
+  description: "Arabic movies and shows for Stremio",
   types: ["movie"],
   catalogs: [
     {
@@ -14,36 +14,32 @@ const manifest = {
     },
   ],
   resources: ["catalog", "stream"],
-  idPrefixes: ["tt"]
 };
 
-const builder = new addonBuilder(manifest);
+const builder = addonBuilder(manifest);
 
 // Sample catalog handler
 builder.defineCatalogHandler(({ type, id, extra }) => {
-  if (type === "movie" && id === "arabic") {
-    const metas = [
+  return Promise.resolve({
+    metas: [
       {
-        id: "tt1234567",
+        id: "movie1",
         type: "movie",
-        name: "Sample Arabic Movie",
-        poster: "https://via.placeholder.com/300x450?text=Arabic+Movie",
+        name: "Arabic Movie 1",
+        poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
       },
-    ];
-    return Promise.resolve({ metas });
-  }
-
-  return Promise.resolve({ metas: [] });
+    ],
+  });
 });
 
 // Sample stream handler
 builder.defineStreamHandler(({ type, id }) => {
-  if (type === "movie" && id === "tt1234567") {
+  if (id === "movie1") {
     return Promise.resolve({
       streams: [
         {
-          title: "Arabic Stream",
-          url: "https://example.com/arabicmovie.mp4",
+          title: "Arabic Movie Stream",
+          url: "https://example.com/arabic-movie1.mp4",
         },
       ],
     });
