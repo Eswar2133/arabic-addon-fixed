@@ -1,4 +1,4 @@
-import sdk from 'stremio-addon-sdk';
+import * as sdk from 'stremio-addon-sdk';
 const { addonBuilder } = sdk;
 
 const manifest = {
@@ -17,7 +17,6 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Call addonBuilder as a function (no 'new')
 const builder = addonBuilder(manifest);
 
 // Sample catalog handler
