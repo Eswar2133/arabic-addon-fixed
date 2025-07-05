@@ -1,5 +1,5 @@
-import http from "http";
-import addonInterface from "./index.js";
+const http = require("http");
+const addonInterface = require("./index.js");
 
 process.on("unhandledRejection", (reason) => {
   console.error("🔥 Unhandled Rejection:", reason);
