@@ -16,9 +16,8 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-const builder = addonBuilder(manifest);
+const builder = new addonBuilder(manifest); // Change to new addonBuilder(manifest)
 
-// Sample catalog handler
 builder.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({
     metas: [
@@ -32,7 +31,6 @@ builder.defineCatalogHandler(({ type, id, extra }) => {
   });
 });
 
-// Sample stream handler
 builder.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
