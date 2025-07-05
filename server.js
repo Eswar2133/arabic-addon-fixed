@@ -1,18 +1,11 @@
-const http = require("http");
-const addonInterface = require("./index");
+import http from "http";
+import addonInterface from "./index.js";
 
 process.on("unhandledRejection", (reason) => {
   console.error("🔥 Unhandled Rejection:", reason);
 });
 
 const server = http.createServer((req, res) => {
-  // Add this route for testing export
-  if (req.url === "/test-export") {
-    const addonSDK = require("stremio-addon-sdk");
-    res.setHeader("Content-Type", "application/json");
-    return res.end(JSON.stringify(Object.keys(addonSDK)));
-  }
-
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (req.method === "OPTIONS") {
     res.writeHead(204);
