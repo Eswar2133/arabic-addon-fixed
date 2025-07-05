@@ -1,5 +1,5 @@
 const http = require("http");
-const handler = require("./index");
+const addonInterface = require("./index");
 
 process.on("unhandledRejection", (reason) => {
   console.error("🔥 Unhandled Rejection:", reason);
@@ -11,7 +11,18 @@ const server = http.createServer((req, res) => {
     res.writeHead(204);
     return res.end();
   }
-  handler(req, res);
+
+  if (typeof addonInterface === "function") {
+    // Some addons export directly as a function
+    addonInterface(req, res);
+  } else if (addonInterface && typeof addonInterface.handler === "function") {
+    // Stremio Addon SDK style
+    addonInterface.handler(req, res);
+  } else {
+    res.writeHead(500);
+    res.end("❌ Addon interface is not callable");
+    console.error("❌ Addon interface is not callable:", addonInterface);
+  }
 });
 
 const port = process.env.PORT || 7000;
