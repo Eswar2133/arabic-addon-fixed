@@ -2,8 +2,8 @@
   "name": "arabic-addon-sdk",
   "version": "1.0.0",
   "description": "Arabic Stremio Addon using SDK",
-  "type": "module",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
