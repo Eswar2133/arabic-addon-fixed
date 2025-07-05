@@ -17,7 +17,7 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-const builder = addonBuilder(manifest);
+const builder = new addonBuilder(manifest);  // <-- Note the 'new' keyword here
 
 // Sample catalog handler
 builder.defineCatalogHandler(({ type, id, extra }) => {
