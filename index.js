@@ -1,7 +1,6 @@
 import sdk from "stremio-addon-sdk";  // Import the entire SDK as a default import
 
-// Destructure the addonBuilder from the imported SDK
-const { addonBuilder } = sdk;
+const { addonBuilder } = sdk;  // Destructure the addonBuilder from the SDK
 
 const manifest = {
   id: "org.arabic.addon",
