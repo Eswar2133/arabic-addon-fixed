@@ -29,45 +29,10 @@ app.get("/manifest.json", (req, res) => {
     resources: ["catalog", "stream"],
   };
 
-  // Set the correct content-type for JSON
   res.setHeader("Content-Type", "application/json");
-
-  // Send the manifest as JSON
   res.json(manifest);  // Ensure the manifest is sent as JSON
 });
 
-// Manually handle the /catalog route
+// Manually handle the /catalog route to return metadata for Arabic movie
 app.get("/catalog", (req, res) => {
-  console.log("Handling /catalog request manually");
-
-  const catalogId = req.query.id || 'arabic';
-
-  if (catalogId === 'arabic') {
-    res.json({
-      metas: [
-        {
-          id: "movie1",
-          type: "movie",
-          name: "Arabic Movie 1",
-          poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
-        },
-      ],
-    });
-  } else {
-    res.json({ metas: [] });
-  }
-});
-
-// Use the router returned by getRouter() from your addon
-app.use("/", addonRouter);  // Attach the addon router to the Express app
-
-// Default handler for unmatched routes
-app.use((req, res) => {
-  res.status(404).send('404 - Not Found');
-});
-
-// Use the dynamic PORT variable (or fallback to 10000 for local development)
-const port = process.env.PORT || 10000;  // Render sets PORT dynamically
-app.listen(port, () => {
-  console.log(`✅ Arabic addon is running on port ${port}`);
-});
+  console.log("Handling /catalog request manually")
