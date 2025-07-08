@@ -1,10 +1,10 @@
-const sdk = require("stremio-addon-sdk");
-const express = require("express");
+const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
+const express = require("express");  // Import Express
 
 const app = express();
 
-// Correct way to create the addon interface using sdk.Addon() directly
-const addon = new sdk.Addon({
+// Initialize the addon interface correctly
+const addon = sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -20,7 +20,7 @@ const addon = new sdk.Addon({
   resources: ["catalog", "stream"],
 });
 
-// Allow CORS for all domains
+// Set up CORS headers
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve the manifest as a JSON file
+// Manifest endpoint
 app.get("/manifest.json", (req, res) => {
   const manifest = {
     id: "org.arabic.addon",
@@ -47,12 +47,12 @@ app.get("/manifest.json", (req, res) => {
   };
 
   res.setHeader("Content-Type", "application/json");
-  res.json(manifest);  // Ensure the manifest is sent as JSON
+  res.json(manifest);  // Serve the manifest as JSON
 });
 
-// Manually handle the /catalog route to return metadata for Arabic movie
+// Catalog handler for Arabic movies
 app.get("/catalog", (req, res) => {
-  console.log("Handling /catalog request manually");
+  console.log("Handling /catalog request");
 
   const catalogId = req.query.id || 'arabic';  // Default to 'arabic' if not provided
 
@@ -72,7 +72,7 @@ app.get("/catalog", (req, res) => {
   }
 });
 
-// Define the stream handler for returning the actual movie URL for streaming
+// Stream handler for returning movie stream URL
 addon.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
@@ -90,7 +90,7 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Use the router returned by getRouter() from your addon (for other routes like /stream)
+// Add the addon routes to the app
 app.use("/", addon.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
@@ -98,8 +98,8 @@ app.use((req, res) => {
   res.status(404).send('404 - Not Found');
 });
 
-// Use the dynamic PORT variable (Render sets PORT dynamically)
-const port = process.env.PORT || 10000;  // Render sets PORT dynamically
+// Dynamic port for Render deployment
+const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log(`✅ Arabic addon is running on port ${port}`);
 });
