@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "commonjs",  
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.cjs"
   },
   "dependencies": {
     "stremio-addon-sdk": "^0.3.0"
