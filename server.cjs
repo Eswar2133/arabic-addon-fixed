@@ -1,10 +1,10 @@
-const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
-const express = require("express");  // Import Express
+const sdk = require("stremio-addon-sdk");
+const express = require("express");
 
-const app = express();  // Create an Express app
+const app = express();
 
-// Correct way to create an addon using sdk.Addon directly
-const addon = new sdk.Addon({
+// Use addonBuilder to create the addon interface correctly
+const addon = sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
