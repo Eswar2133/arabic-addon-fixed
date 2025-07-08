@@ -66,7 +66,8 @@ app.use((req, res) => {
   res.status(404).send('404 - Not Found');
 });
 
-const port = process.env.PORT || 10000;
+// Use the dynamic PORT variable (or fallback to 10000 for local development)
+const port = process.env.PORT || 10000;  // Render sets PORT dynamically
 app.listen(port, () => {
   console.log(`✅ Arabic addon is running on port ${port}`);
 });
