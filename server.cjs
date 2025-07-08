@@ -3,10 +3,15 @@ const addonRouter = require("./index.cjs");  // Import the router from your addo
 
 const app = express();  // Create an Express app
 
+// Test route for the root URL (/) to ensure it's working
+app.get("/", (req, res) => {
+  res.send("✅ Arabic Addon is working!");  // Confirm addon is running on the root URL
+});
+
 // Use the router returned by getRouter() from your addon
 app.use("/", addonRouter);  // Attach the addon router to the Express app
 
-// Default handler for when no routes are matched
+// Default handler for unmatched routes
 app.use((req, res) => {
   res.status(404).send('404 - Not Found');  // Handle any unmatched routes
 });
