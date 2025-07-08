@@ -26,21 +26,24 @@ const addon = new Addon(manifest);  // Instantiate the Addon class with the mani
 
 console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
 
-// Define catalog handler
+// Define catalog handler (this should respond to /catalog requests)
 addon.defineCatalogHandler(({ type, id, extra }) => {
-  return Promise.resolve({
-    metas: [
-      {
-        id: "movie1",
-        type: "movie",
-        name: "Arabic Movie 1",
-        poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
-      },
-    ],
-  });
+  if (id === "arabic") {
+    return Promise.resolve({
+      metas: [
+        {
+          id: "movie1",
+          type: "movie",
+          name: "Arabic Movie 1",
+          poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
+        },
+      ],
+    });
+  }
+  return Promise.resolve({ metas: [] });
 });
 
-// Define stream handler
+// Define stream handler (this should respond to stream requests)
 addon.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
@@ -55,6 +58,5 @@ addon.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-// Export getRouter() method directly
-module.exports = addon.getRouter();  // Export the router directly from the addon instance
-
+// Export the router directly
+module.exports = addon.getRouter();  // Export the router from the addon instance
