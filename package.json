@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Arabic Stremio Addon using SDK",
   "main": "server.js",
-  "type": "commonjs",  // Change to commonjs
+  "type": "commonjs",  
   "scripts": {
     "start": "node server.js"
   },
