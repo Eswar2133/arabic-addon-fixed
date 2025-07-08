@@ -45,14 +45,32 @@ app.get("/catalog", (req, res) => {
         {
           id: "movie1",  // Unique ID for the movie
           type: "movie",  // Type should be 'movie'
-          name: "The Prophet's Journey",  // Movie name
-          poster: "https://via.placeholder.com/300x450.png?text=The+Prophet%27s+Journey",  // Movie poster URL
+          name: "Turner Video",  // Movie name
+          poster: "https://via.placeholder.com/300x450.png?text=Turner+Video",  // Movie poster URL (you can update this if needed)
         }
       ]
     });
   } else {
     res.json({ metas: [] });
   }
+});
+
+// Define the stream handler for returning the actual movie URL for streaming
+addon.defineStreamHandler(function ({ type, id }) {
+  console.log("Handling stream request for:", type, id);
+
+  if (id === "movie1") {  // Make sure the movie ID matches the one in the catalog
+    return Promise.resolve({
+      streams: [
+        {
+          title: "Turner Video",  // Movie title
+          url: "https://dn721907.ca.archive.org/0/items/turner_video_12414/12414.mp4"  // Valid MP4 URL for streaming
+        },
+      ],
+    });
+  }
+
+  return Promise.resolve({ streams: [] });
 });
 
 // Use the router returned by getRouter() from your addon (for other routes like /stream)
