@@ -1,10 +1,10 @@
-const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
-const express = require("express");  // Import Express
+const sdk = require("stremio-addon-sdk");
+const express = require("express");
 
-const app = express();  // Create an Express app
+const app = express();
 
-// Correct way to create the addon with new sdk.Addon({...})
-const addon = new sdk.Addon({
+// Correct way to create an addon interface using addonBuilder
+const addonInterface = sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -18,14 +18,6 @@ const addon = new sdk.Addon({
     },
   ],
   resources: ["catalog", "stream"],
-});
-
-// Allow CORS for all domains
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
 });
 
 // Serve the manifest as a JSON file
@@ -73,7 +65,7 @@ app.get("/catalog", (req, res) => {
 });
 
 // Define the stream handler for returning the actual movie URL for streaming
-addon.defineStreamHandler(function ({ type, id }) {
+addonInterface.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
   if (id === "movie1") {  // Make sure the movie ID matches the one in the catalog
@@ -91,7 +83,7 @@ addon.defineStreamHandler(function ({ type, id }) {
 });
 
 // Use the router returned by getRouter() from your addon (for other routes like /stream)
-app.use("/", addon.getRouter());  // Attach the addon router to the Express app
+app.use("/", addonInterface.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
 app.use((req, res) => {
