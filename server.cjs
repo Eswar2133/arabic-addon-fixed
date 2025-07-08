@@ -4,8 +4,8 @@ const addonRouter = require("./index.cjs");  // Import the router from your addo
 
 const app = express();  // Create an Express app
 
-// Correctly create the addon using the SDK's addonBuilder (no 'new' keyword needed)
-const builder = sdk.addonBuilder({
+// Correctly create the addon using the SDK's Addon class
+const addon = new sdk.Addon({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -74,7 +74,7 @@ app.get("/catalog", (req, res) => {
 });
 
 // Define the stream handler for returning the actual movie URL for streaming
-builder.defineStreamHandler(function ({ type, id }) {
+addon.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
   if (id === "movie1") {  // Make sure the movie ID matches the one in the catalog
@@ -92,7 +92,7 @@ builder.defineStreamHandler(function ({ type, id }) {
 });
 
 // Use the router returned by getRouter() from your addon (for other routes like /stream)
-app.use("/", builder.getRouter());  // Attach the addon router to the Express app
+app.use("/", addon.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
 app.use((req, res) => {
