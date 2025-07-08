@@ -1,5 +1,5 @@
 const express = require("express");  // Import Express
-const addonRouter = require("./index.cjs");  // Import the router from your addon
+const addon = require("./index.cjs");  // Import the entire addon (with handlers)
 
 const app = express();  // Create an Express app
 
@@ -8,8 +8,22 @@ app.get("/", (req, res) => {
   res.send("✅ Arabic Addon is working!");  // Confirm addon is running on the root URL
 });
 
-// Use the router returned by getRouter() from your addon
-app.use("/", addonRouter);  // Attach the addon router to the Express app
+// Explicitly handle /catalog route
+app.get("/catalog", (req, res) => {
+  const catalogHandler = addon.defineCatalogHandler;  // Access the catalog handler
+
+  // Call the catalog handler and send the response
+  catalogHandler({ type: 'movie', id: 'arabic', extra: {} })
+    .then(response => {
+      res.json(response);  // Send catalog data as JSON response
+    })
+    .catch(err => {
+      res.status(500).send("Error fetching catalog: " + err.message);
+    });
+});
+
+// Use the router returned by getRouter() from your addon (other routes like stream)
+app.use("/", addon.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
 app.use((req, res) => {
