@@ -1,4 +1,6 @@
-const sdk = require("stremio-addon-sdk");  // Import the entire SDK
+const sdk = require("stremio-addon-sdk");  // Import the SDK
+
+console.log("SDK Available:", sdk);  // Log to confirm SDK is available
 
 // Define the manifest
 const manifest = {
@@ -17,15 +19,15 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Correctly create the addon instance using sdk()
+// Correctly initialize the addon
 const addon = sdk(manifest);  // Initialize the addon correctly
 
-console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
+// Log addon object to verify its methods
+console.log("Addon Object:", addon);
 
-// Explicitly define catalog handler (this should handle the /catalog route)
+// Define the catalog handler (this handles the /catalog route)
 addon.defineCatalogHandler(function ({ type, id, extra }) {
-  console.log("Handling catalog request for:", type, id);  // Log to track the catalog handler
-
+  console.log("Handling /catalog request:", type, id);  // Log to track handler call
   if (id === "arabic") {
     return Promise.resolve({
       metas: [
@@ -42,7 +44,7 @@ addon.defineCatalogHandler(function ({ type, id, extra }) {
   return Promise.resolve({ metas: [] });
 });
 
-// Define stream handler (this handles requests for streaming)
+// Define the stream handler (this handles requests for streaming)
 addon.defineStreamHandler(function ({ type, id }) {
   if (id === "movie1") {
     return Promise.resolve({
@@ -57,5 +59,5 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Export the router from the addon to handle requests (e.g., /catalog, /stream)
+// Export the router for routing requests (this handles routes like /catalog, /stream)
 module.exports = addon.getRouter();  // Export the router from the addon instance
