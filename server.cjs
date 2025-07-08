@@ -1,38 +1,13 @@
-const http = require("http");  // CommonJS require()
+const express = require("express");  // Import Express
+const addonRouter = require("./index.cjs").getRouter();  // Import the router from your addon
 
-const addonInterface = require("./index.cjs");  // Require the index.cjs file
+const app = express();  // Create an Express app
 
-process.on("unhandledRejection", (reason) => {
-  console.error("🔥 Unhandled Rejection:", reason);
-});
+// Use the router returned by getRouter() from your addon
+app.use("/", addonRouter);  // Attach the addon router to the Express app
 
-const server = http.createServer((req, res) => {
-  // Optional test route to verify SDK exports
-  if (req.url === "/test-export") {
-    const addonSDK = require("stremio-addon-sdk");  // Use require to check SDK exports
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(Object.keys(addonSDK)));
-    return;
-  }
+const port = process.env.PORT || 10000;  // Set port for the server
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  if (req.method === "OPTIONS") {
-    res.writeHead(204);
-    return res.end();
-  }
-
-  if (typeof addonInterface === "function") {
-    addonInterface(req, res);
-  } else if (addonInterface && typeof addonInterface.handler === "function") {
-    addonInterface.handler(req, res);
-  } else {
-    res.writeHead(500);
-    res.end("❌ Addon interface is not callable");
-    console.error("❌ Addon interface is not callable:", addonInterface);
-  }
-});
-
-const port = process.env.PORT || 7000;
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`✅ Arabic addon is running on port ${port}`);
 });
