@@ -1,15 +1,11 @@
 const sdk = require("stremio-addon-sdk");  // Import the entire SDK
 
-console.log("SDK:", sdk);  // Log the SDK to check how it's structured
-
-// Access Addon class from the SDK
-const Addon = sdk;  // The entire SDK is the Addon class
-
+// Define the manifest
 const manifest = {
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
-  description: "Arabic movies and shows for Stremio",
+  description: "Arabic movies for Stremio",
   types: ["movie"],
   catalogs: [
     {
@@ -21,13 +17,18 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Instantiate the Addon class directly
-const addon = new Addon(manifest);  // Instantiate the Addon class with the manifest
+// Initialize the addon
+const addon = new sdk.Addon(manifest);
 
-console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
+// Log available methods of the addon instance to debug
+console.log('Available methods on addon:', Object.keys(addon));
 
-// Correctly define the catalog handler during addon setup
+// Check if defineCatalogHandler exists
+console.log('defineCatalogHandler exists:', typeof addon.defineCatalogHandler);
+
+// Define catalog handler
 addon.defineCatalogHandler(({ type, id, extra }) => {
+  console.log('Handling catalog request:', type, id);
   if (id === "arabic") {
     return Promise.resolve({
       metas: [
@@ -43,7 +44,7 @@ addon.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({ metas: [] });
 });
 
-// Correctly define the stream handler during addon setup
+// Define stream handler
 addon.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
