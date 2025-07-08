@@ -1,4 +1,4 @@
-import sdk from "stremio-addon-sdk";
+import { addonBuilder } from "stremio-addon-sdk";
 
 const manifest = {
   id: "org.arabic.addon",
@@ -16,8 +16,8 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Correct instantiation of addonBuilder
-const builder = new sdk.addonBuilder(manifest);
+// Instantiate the builder correctly
+const builder = new addonBuilder(manifest);
 
 builder.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({
