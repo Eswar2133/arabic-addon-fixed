@@ -19,7 +19,7 @@ const manifest = {
 };
 
 // Instantiate the builder correctly
-const builder = new addonBuilder(manifest);  // Correct instantiation with 'new'
+const builder = 'new' addonBuilder(manifest);  // Correct instantiation with 'new'
 
 builder.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({
