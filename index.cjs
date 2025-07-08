@@ -3,7 +3,7 @@ const sdk = require("stremio-addon-sdk");  // Import the entire SDK
 console.log("SDK:", sdk);  // Log the SDK to check how it's structured
 
 // Access Addon class from the SDK
-const Addon = sdk;  // It looks like the entire SDK is the Addon class
+const Addon = sdk;  // The entire SDK is the Addon class
 
 const manifest = {
   id: "org.arabic.addon",
@@ -24,8 +24,7 @@ const manifest = {
 // Instantiate the Addon class directly
 const addon = new Addon(manifest);  // Instantiate the Addon class with the manifest
 
-// Log to check if Addon is instantiated correctly
-console.log("Addon instantiated:", addon);
+console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
 
 // Define catalog handler
 addon.defineCatalogHandler(({ type, id, extra }) => {
@@ -56,5 +55,5 @@ addon.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-// Export the interface correctly
-module.exports = addon.getInterface();  // Export the correct interface method
+// Use getRouter() instead of getInterface()
+module.exports = addon.getRouter();  // Export the router method from Addon
