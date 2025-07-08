@@ -58,5 +58,5 @@ addon.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-// Export the router directly
+// Export the router from the Addon class
 module.exports = addon.getRouter();  // Export the router from the addon instance
