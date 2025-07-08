@@ -4,8 +4,8 @@ const addonRouter = require("./index.cjs");  // Import the router from your addo
 
 const app = express();  // Create an Express app
 
-// Initialize the addon with the manifest
-const addon = new sdk.Addon({
+// Initialize the addon with the manifest using the addonBuilder
+const builder = new sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -74,7 +74,7 @@ app.get("/catalog", (req, res) => {
 });
 
 // Define the stream handler for returning the actual movie URL for streaming
-addon.defineStreamHandler(function ({ type, id }) {
+builder.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
   if (id === "movie1") {  // Make sure the movie ID matches the one in the catalog
@@ -91,4 +91,16 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Use the router returned by getRouter() from your addon (for other routes like
+// Use the router returned by getRouter() from your addon (for other routes like /stream)
+app.use("/", builder.getRouter());  // Attach the addon router to the Express app
+
+// Default handler for unmatched routes
+app.use((req, res) => {
+  res.status(404).send('404 - Not Found');
+});
+
+// Use the dynamic PORT variable (Render sets PORT dynamically)
+const port = process.env.PORT || 10000;  // Render sets PORT dynamically
+app.listen(port, () => {
+  console.log(`✅ Arabic addon is running on port ${port}`);
+});
