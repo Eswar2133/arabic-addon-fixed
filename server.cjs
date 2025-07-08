@@ -1,5 +1,5 @@
 const express = require("express");  // Import Express
-const addon = require("./index.cjs");  // Import the entire addon (with handlers)
+const addonRouter = require("./index.cjs");  // Import the router from your addon
 
 const app = express();  // Create an Express app
 
@@ -8,38 +8,29 @@ app.get("/", (req, res) => {
   res.send("✅ Arabic Addon is working!");  // Confirm addon is running on the root URL
 });
 
-// Explicitly handle /catalog route
+// Handle the /catalog route manually
 app.get("/catalog", (req, res) => {
-  console.log('Received request for /catalog');
-  
-  // Log to check what the handler receives
-  console.log('Request for /catalog with type:', 'movie', 'and id:', 'arabic');
-  
-  // Call the catalog handler and send the response
-  addon.defineCatalogHandler({ type: 'movie', id: 'arabic', extra: {} })
-    .then(response => {
-      console.log('Catalog Response:', response);  // Log the catalog response
-      res.json(response);  // Send catalog data as JSON response
-    })
-    .catch(err => {
-      console.error("Error fetching catalog:", err);  // Log the error
-      res.status(500).send("Error fetching catalog: " + err.message);
+  console.log("Handling /catalog request manually");
+
+  // Manually return the metadata for the Arabic catalog
+  if (req.query.id === 'arabic') {
+    res.json({
+      metas: [
+        {
+          id: "movie1",
+          type: "movie",
+          name: "Arabic Movie 1",
+          poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
+        },
+      ],
     });
+  } else {
+    res.json({ metas: [] });
+  }
 });
 
-// Explicitly handle /stream route
-app.get("/stream/:id", (req, res) => {
-  const streamHandler = addon.defineStreamHandler;  // Access the stream handler
-
-  // Call the stream handler and send the response for the movie
-  streamHandler({ type: 'movie', id: req.params.id })
-    .then(response => {
-      res.json(response);  // Send stream data as JSON response
-    })
-    .catch(err => {
-      res.status(500).send("Error fetching stream: " + err.message);
-    });
-});
+// Use the router returned by getRouter() from your addon (for other routes like /stream)
+app.use("/", addonRouter);  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
 app.use((req, res) => {
