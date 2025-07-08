@@ -3,8 +3,8 @@ const express = require("express");  // Import Express
 
 const app = express();
 
-// Define the Addon interface correctly
-const addon = sdk.createAddon({
+// Initialize the addon using Stremio SDK
+const addon = sdk.addon({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -13,7 +13,7 @@ const addon = sdk.createAddon({
   catalogs: [
     {
       type: "movie",
-      id: "arabic",  // Catalog ID - This will be used to list movies
+      id: "arabic",  // Catalog ID used for listing movies
       name: "Arabic Movies",
     },
   ],
@@ -39,7 +39,7 @@ app.get("/manifest.json", (req, res) => {
     catalogs: [
       {
         type: "movie",
-        id: "arabic",  // Catalog ID for Arabic movies
+        id: "arabic",  // Catalog ID used for listing movies
         name: "Arabic Movies",
       },
     ],
@@ -76,7 +76,7 @@ app.get("/catalog", (req, res) => {
 addon.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
-  if (id === "movie1") {  // Ensure the ID matches the one in the catalog
+  if (id === "movie1") {  // Ensure the movie ID matches the one in the catalog
     return Promise.resolve({
       streams: [
         {
@@ -90,7 +90,7 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Use the router returned by getRouter() from your addon (for other routes like /stream)
+// Add the addon routes to the app
 app.use("/", addon.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
