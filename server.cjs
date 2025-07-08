@@ -1,5 +1,5 @@
 const express = require("express");  // Import Express
-const addonRouter = require("./index.cjs").getRouter();  // Import the router from your addon
+const addonRouter = require("./index.cjs");  // Import the router directly from the addon
 
 const app = express();  // Create an Express app
 
