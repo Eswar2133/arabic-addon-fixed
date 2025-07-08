@@ -12,12 +12,17 @@ app.get("/", (req, res) => {
 app.get("/catalog", (req, res) => {
   const catalogHandler = addon.defineCatalogHandler;  // Access the catalog handler
 
+  // Log request data
+  console.log('Handling /catalog route...');
+  
   // Call the catalog handler and send the response
   catalogHandler({ type: 'movie', id: 'arabic', extra: {} })
     .then(response => {
+      console.log('Catalog Response:', response);  // Log the catalog response
       res.json(response);  // Send catalog data as JSON response
     })
     .catch(err => {
+      console.error("Error fetching catalog:", err);  // Log the error
       res.status(500).send("Error fetching catalog: " + err.message);
     });
 });
