@@ -1,44 +1,30 @@
-const express = require("express");  // Import Express
-const addonRouter = require("./index.cjs");  // Import the router from your addon
+const express = require("express");
+const addonRouter = require("./index.cjs");
 
-const app = express();  // Create an Express app
+const app = express();
 
-// Test route for the root URL (/) to ensure it's working
+// Allow CORS for all domains
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
+// The rest of your routes
 app.get("/", (req, res) => {
-  res.send("✅ Arabic Addon is working!");  // Confirm addon is running on the root URL
+  res.send("✅ Arabic Addon is working!");
 });
 
-// Handle the /catalog route manually
-app.get("/catalog", (req, res) => {
-  console.log("Handling /catalog request manually");
+// Attach the router from your addon
+app.use("/", addonRouter);
 
-  // Manually return the metadata for the Arabic catalog
-  if (req.query.id === 'arabic') {
-    res.json({
-      metas: [
-        {
-          id: "movie1",
-          type: "movie",
-          name: "Arabic Movie 1",
-          poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
-        },
-      ],
-    });
-  } else {
-    res.json({ metas: [] });
-  }
-});
-
-// Use the router returned by getRouter() from your addon (for other routes like /stream)
-app.use("/", addonRouter);  // Attach the addon router to the Express app
-
-// Default handler for unmatched routes
+// Default 404 handler
 app.use((req, res) => {
-  res.status(404).send('404 - Not Found');  // Handle any unmatched routes
+  res.status(404).send('404 - Not Found');
 });
 
-const port = process.env.PORT || 10000;  // Set port for the server
-
+const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log(`✅ Arabic addon is running on port ${port}`);
 });
