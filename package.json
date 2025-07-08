@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Arabic Stremio Addon using SDK",
   "main": "server.js",
-  "type": "module",
+  "type": "module",  // Ensure module type for ESM
   "scripts": {
     "start": "node server.js"
   },
