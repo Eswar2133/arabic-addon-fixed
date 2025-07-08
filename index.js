@@ -46,4 +46,5 @@ builder.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
+// Use module.exports to export the interface
 module.exports = builder.getInterface();
