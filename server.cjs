@@ -22,8 +22,19 @@ app.get("/catalog", (req, res) => {
     });
 });
 
-// Use the router returned by getRouter() from your addon (other routes like stream)
-app.use("/", addon.getRouter());  // Attach the addon router to the Express app
+// Explicitly handle /stream route
+app.get("/stream/:id", (req, res) => {
+  const streamHandler = addon.defineStreamHandler;  // Access the stream handler
+
+  // Call the stream handler and send the response for the movie
+  streamHandler({ type: 'movie', id: req.params.id })
+    .then(response => {
+      res.json(response);  // Send stream data as JSON response
+    })
+    .catch(err => {
+      res.status(500).send("Error fetching stream: " + err.message);
+    });
+});
 
 // Default handler for unmatched routes
 app.use((req, res) => {
