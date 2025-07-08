@@ -2,8 +2,8 @@ const sdk = require("stremio-addon-sdk");  // Import the entire SDK
 
 console.log(sdk);  // Log the SDK to check how it's structured
 
-// Assuming addonBuilder is part of the default export
-const addonBuilder = sdk.addonBuilder || sdk;  // Safely access addonBuilder
+// Access addonBuilder from the SDK
+const addonBuilder = sdk.addonBuilder;
 
 const manifest = {
   id: "org.arabic.addon",
@@ -21,37 +21,15 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Log if addonBuilder is a function or class
-console.log('addonBuilder is a function:', typeof addonBuilder === 'function');
+// Instantiate the builder correctly using addonBuilder as a function
+const builder = addonBuilder(manifest);  // Call addonBuilder directly
 
-// Instantiate the builder correctly
-const builder = new addonBuilder(manifest);  // Correct instantiation with 'new'
+console.log('builder:', builder);  // Log the builder to check what we get
 
-builder.defineCatalogHandler(({ type, id, extra }) => {
-  return Promise.resolve({
-    metas: [
-      {
-        id: "movie1",
-        type: "movie",
-        name: "Arabic Movie 1",
-        poster: "https://via.placeholder.com/300x450.png?text=Arabic+Movie+1",
-      },
-    ],
-  });
-});
-
-builder.defineStreamHandler(({ type, id }) => {
-  if (id === "movie1") {
-    return Promise.resolve({
-      streams: [
-        {
-          title: "Arabic Movie Stream",
-          url: "https://example.com/arabic-movie1.mp4",
-        },
-      ],
-    });
-  }
-  return Promise.resolve({ streams: [] });
-});
-
-module.exports = builder.getInterface();  // Export using module.exports in CommonJS
+// If builder has a method `getInterface`, call it; otherwise, check the builder structure
+if (builder && typeof builder.getInterface === 'function') {
+  module.exports = builder.getInterface();
+} else {
+  // Fallback: if getInterface is not available, log the builder structure
+  console.log('No getInterface method found. Builder structure:', builder);
+}
