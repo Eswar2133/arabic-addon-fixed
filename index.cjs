@@ -1,6 +1,7 @@
-const sdk = require("stremio-addon-sdk");  // Use require to import CommonJS module
+const sdk = require("stremio-addon-sdk");  // Import the entire SDK
 
-const { addonBuilder } = sdk;  // Access addonBuilder from the default export
+// Access addonBuilder from the SDK
+const addonBuilder = sdk.addonBuilder;
 
 const manifest = {
   id: "org.arabic.addon",
