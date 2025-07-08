@@ -1,5 +1,6 @@
-const http = require("http");
-const addonInterface = require("./index.js");  // Use require instead of import
+const http = require("http");  // CommonJS require()
+
+const addonInterface = require("./index.cjs");  // Require the index.cjs file
 
 process.on("unhandledRejection", (reason) => {
   console.error("🔥 Unhandled Rejection:", reason);
