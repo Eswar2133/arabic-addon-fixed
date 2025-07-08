@@ -1,10 +1,10 @@
-const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
+const sdk = require("stremio-addon-sdk");  // Correct import of Stremio SDK
 const express = require("express");  // Import Express
 const addonRouter = require("./index.cjs");  // Import the router from your addon
 
 const app = express();  // Create an Express app
 
-// Initialize the addon with the manifest using the addonBuilder
+// Initialize the addon with the manifest using the correct sdk object
 const builder = new sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
