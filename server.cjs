@@ -1,9 +1,9 @@
-const sdk = require("stremio-addon-sdk");
-const express = require("express");
+const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
+const express = require("express");  // Import Express
 
-const app = express();
+const app = express();  // Create an Express app
 
-// Correct way to create an addon interface using addonBuilder
+// Correctly create the addon interface using sdk.addonBuilder()
 const addonInterface = sdk.addonBuilder({
   id: "org.arabic.addon",
   version: "1.0.0",
@@ -18,6 +18,14 @@ const addonInterface = sdk.addonBuilder({
     },
   ],
   resources: ["catalog", "stream"],
+});
+
+// Allow CORS for all domains
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 
 // Serve the manifest as a JSON file
