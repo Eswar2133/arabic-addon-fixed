@@ -1,6 +1,4 @@
-import sdk from "stremio-addon-sdk";  // Import the entire SDK as a default import
-
-const { addonBuilder } = sdk;  // Destructure the addonBuilder from the SDK
+const { addonBuilder } = require("stremio-addon-sdk");  // Use require to import CommonJS module
 
 const manifest = {
   id: "org.arabic.addon",
@@ -48,4 +46,4 @@ builder.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-export default builder.getInterface();
+module.exports = builder.getInterface();
