@@ -10,13 +10,13 @@ app.get("/", (req, res) => {
 
 // Explicitly handle /catalog route
 app.get("/catalog", (req, res) => {
-  const catalogHandler = addon.defineCatalogHandler;  // Access the catalog handler
-
-  // Log request data
-  console.log('Handling /catalog route...');
+  console.log('Received request for /catalog');
+  
+  // Log to check what the handler receives
+  console.log('Request for /catalog with type:', 'movie', 'and id:', 'arabic');
   
   // Call the catalog handler and send the response
-  catalogHandler({ type: 'movie', id: 'arabic', extra: {} })
+  addon.defineCatalogHandler({ type: 'movie', id: 'arabic', extra: {} })
     .then(response => {
       console.log('Catalog Response:', response);  // Log the catalog response
       res.json(response);  // Send catalog data as JSON response
