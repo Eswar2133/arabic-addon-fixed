@@ -26,7 +26,7 @@ const addon = new Addon(manifest);  // Instantiate the Addon class with the mani
 
 console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
 
-// Define catalog handler (this should respond to /catalog requests)
+// Correctly define the catalog handler during addon setup
 addon.defineCatalogHandler(({ type, id, extra }) => {
   if (id === "arabic") {
     return Promise.resolve({
@@ -43,7 +43,7 @@ addon.defineCatalogHandler(({ type, id, extra }) => {
   return Promise.resolve({ metas: [] });
 });
 
-// Define stream handler (this should respond to stream requests)
+// Correctly define the stream handler during addon setup
 addon.defineStreamHandler(({ type, id }) => {
   if (id === "movie1") {
     return Promise.resolve({
