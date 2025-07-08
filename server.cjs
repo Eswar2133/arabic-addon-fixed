@@ -3,8 +3,8 @@ const express = require("express");  // Import Express
 
 const app = express();  // Create an Express app
 
-// Correctly use the addonBuilder function to create the addon
-const addon = sdk.addonBuilder({
+// Correct way to create the addon with new sdk.Addon({...})
+const addon = new sdk.Addon({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
