@@ -1,7 +1,9 @@
 const sdk = require("stremio-addon-sdk");  // Import the entire SDK
 
-// Access addonBuilder from the SDK
-const addonBuilder = sdk.addonBuilder;
+console.log(sdk);  // Log the SDK to check how it's structured
+
+// Assuming addonBuilder is part of the default export
+const addonBuilder = sdk.addonBuilder || sdk;  // Safely access addonBuilder
 
 const manifest = {
   id: "org.arabic.addon",
@@ -18,6 +20,9 @@ const manifest = {
   ],
   resources: ["catalog", "stream"],
 };
+
+// Log if addonBuilder is a function or class
+console.log('addonBuilder is a function:', typeof addonBuilder === 'function');
 
 // Instantiate the builder correctly
 const builder = new addonBuilder(manifest);  // Correct instantiation with 'new'
