@@ -55,5 +55,6 @@ addon.defineStreamHandler(({ type, id }) => {
   return Promise.resolve({ streams: [] });
 });
 
-// Use getRouter() instead of getInterface()
-module.exports = addon.getRouter();  // Export the router method from Addon
+// Export getRouter() method directly
+module.exports = addon.getRouter();  // Export the router directly from the addon instance
+
