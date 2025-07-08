@@ -1,7 +1,25 @@
+const sdk = require("stremio-addon-sdk");  // Import Stremio SDK
 const express = require("express");  // Import Express
 const addonRouter = require("./index.cjs");  // Import the router from your addon
 
 const app = express();  // Create an Express app
+
+// Initialize the addon with the manifest
+const addon = new sdk.Addon({
+  id: "org.arabic.addon",
+  version: "1.0.0",
+  name: "Arabic Addon",
+  description: "Arabic movies for Stremio",
+  types: ["movie"],
+  catalogs: [
+    {
+      type: "movie",
+      id: "arabic",
+      name: "Arabic Movies",
+    },
+  ],
+  resources: ["catalog", "stream"],
+});
 
 // Allow CORS for all domains
 app.use((req, res, next) => {
@@ -46,7 +64,7 @@ app.get("/catalog", (req, res) => {
           id: "movie1",  // Unique ID for the movie
           type: "movie",  // Type should be 'movie'
           name: "Turner Video",  // Movie name
-          poster: "https://via.placeholder.com/300x450.png?text=Turner+Video",  // Movie poster URL (you can update this if needed)
+          poster: "https://via.placeholder.com/300x450.png?text=Turner+Video",  // Movie poster URL
         }
       ]
     });
@@ -73,16 +91,4 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Use the router returned by getRouter() from your addon (for other routes like /stream)
-app.use("/", addonRouter);  // Attach the addon router to the Express app
-
-// Default handler for unmatched routes
-app.use((req, res) => {
-  res.status(404).send('404 - Not Found');
-});
-
-// Use the dynamic PORT variable (Render sets PORT dynamically)
-const port = process.env.PORT || 10000;  // Render sets PORT dynamically
-app.listen(port, () => {
-  console.log(`✅ Arabic addon is running on port ${port}`);
-});
+// Use the router returned by getRouter() from your addon (for other routes like
