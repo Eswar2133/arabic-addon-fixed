@@ -3,8 +3,8 @@ const express = require("express");  // Import Express
 
 const app = express();
 
-// Initialize the addon interface correctly
-const addon = sdk.addonBuilder({
+// Define the Addon interface correctly
+const addon = sdk.createAddon({
   id: "org.arabic.addon",
   version: "1.0.0",
   name: "Arabic Addon",
@@ -13,14 +13,14 @@ const addon = sdk.addonBuilder({
   catalogs: [
     {
       type: "movie",
-      id: "arabic",
+      id: "arabic",  // Catalog ID - This will be used to list movies
       name: "Arabic Movies",
     },
   ],
   resources: ["catalog", "stream"],
 });
 
-// Set up CORS headers
+// Allow CORS for all domains
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Manifest endpoint
+// Serve the manifest as a JSON file
 app.get("/manifest.json", (req, res) => {
   const manifest = {
     id: "org.arabic.addon",
@@ -39,7 +39,7 @@ app.get("/manifest.json", (req, res) => {
     catalogs: [
       {
         type: "movie",
-        id: "arabic",
+        id: "arabic",  // Catalog ID for Arabic movies
         name: "Arabic Movies",
       },
     ],
@@ -52,7 +52,7 @@ app.get("/manifest.json", (req, res) => {
 
 // Catalog handler for Arabic movies
 app.get("/catalog", (req, res) => {
-  console.log("Handling /catalog request");
+  console.log("Handling /catalog request manually");
 
   const catalogId = req.query.id || 'arabic';  // Default to 'arabic' if not provided
 
@@ -72,11 +72,11 @@ app.get("/catalog", (req, res) => {
   }
 });
 
-// Stream handler for returning movie stream URL
+// Define the stream handler for returning the actual movie URL for streaming
 addon.defineStreamHandler(function ({ type, id }) {
   console.log("Handling stream request for:", type, id);
 
-  if (id === "movie1") {  // Make sure the movie ID matches the one in the catalog
+  if (id === "movie1") {  // Ensure the ID matches the one in the catalog
     return Promise.resolve({
       streams: [
         {
@@ -90,7 +90,7 @@ addon.defineStreamHandler(function ({ type, id }) {
   return Promise.resolve({ streams: [] });
 });
 
-// Add the addon routes to the app
+// Use the router returned by getRouter() from your addon (for other routes like /stream)
 app.use("/", addon.getRouter());  // Attach the addon router to the Express app
 
 // Default handler for unmatched routes
