@@ -17,14 +17,10 @@ const manifest = {
   resources: ["catalog", "stream"],
 };
 
-// Initialize the addon
-const addon = new sdk.Addon(manifest);
+// Instantiate the Addon directly (no 'new' keyword needed)
+const addon = sdk(manifest);  // Correct way to instantiate the addon using the function export
 
-// Log available methods of the addon instance to debug
-console.log('Available methods on addon:', Object.keys(addon));
-
-// Check if defineCatalogHandler exists
-console.log('defineCatalogHandler exists:', typeof addon.defineCatalogHandler);
+console.log("Addon instantiated:", addon);  // Log to check if it's instantiated correctly
 
 // Define catalog handler
 addon.defineCatalogHandler(({ type, id, extra }) => {
